@@ -284,20 +284,24 @@ color: #2A2A2A;
 .nav-hrs-estimate{
   font-family: 'Poppins';
 font-style: normal;
-font-weight: 500;
+font-weight: 400;
 font-size: 16.83px;
 line-height: 25px;
 letter-spacing: 0.02em;
+width: fit-content;
+padding-right: 0px;
+margin-left: 10px;
+margin-right: 10px;
 
-color: #2A2A2A;
-border: 1px solid #BEBEBE;
+color: #5c85d2;
+border: 1px solid #457fdc;
 border-radius: 99px;
-width: 221px;
+width: 200px;
 height: 25px;
 left: 1141px;
 top: 165px;
-/* padding-left: 20px; */
-padding: 4px 20px 4px;
+padding-left: 20px;
+/* padding: 4px 6px 4px 6px; */
 }
 .proj-person{
   font-family: 'Poppins';

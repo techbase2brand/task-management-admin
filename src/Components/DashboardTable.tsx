@@ -5,13 +5,23 @@ import { useNavigate } from "react-router-dom";
 
 const { RangePicker } = DatePicker;
 
-const DashboardTable: React.FC = () => {
+
+
+interface MorningDashboardTableProps {
+  totalEstHrs: any;
+  setTotalEstHrs: React.Dispatch<React.SetStateAction<any>>;
+  setTotalUpWorkHrs: any;
+  setSetTotalUpWorkHrs: React.Dispatch<React.SetStateAction<any>>;
+}
+
+
+const DashboardTable: React.FC<MorningDashboardTableProps> = ({totalEstHrs,setTotalEstHrs, setTotalUpWorkHrs ,setSetTotalUpWorkHrs}) => {
   const [manager, setManager] = useState("");
   const [teamLead, setTeamLead] = useState("");
   const [date, setDate] = useState<dayjs.Dayjs>(dayjs());
   const [isEvening, setIsEvening] = useState(false);
   const navigate = useNavigate();
-  const [activeButton, setActiveButton] = useState("");
+  const [activeButton, setActiveButton] = useState("button1");
 
   const handleButton1Click = () => {
     setActiveButton("button1");
@@ -71,7 +81,7 @@ const DashboardTable: React.FC = () => {
           width: "100%",
         }}
       >
-        <Dropdown overlay={managerMenu}>
+        {/* <Dropdown overlay={managerMenu}>
           <Button className="nav-dropDown" style={{ width: "120px" }}>
             Manager: {manager}
           </Button>
@@ -87,7 +97,7 @@ const DashboardTable: React.FC = () => {
           style={{ width: "50px", paddingInline: "10px" }}
         >
           Go
-        </Button>
+        </Button> */}
         {/* <Button
         className="nav-proj-btn"
           type="primary"
@@ -100,18 +110,24 @@ const DashboardTable: React.FC = () => {
           {isEvening ? 'Morning' : 'Evening'}
         </Button> */}
 
-        <div>
+        <div style={{display:'flex', flexDirection:'row',}}>
           <button
+          style={
+            {backgroundColor:'royalBlue', padding:"8px" , borderRadius:'5px 0px 0px 5px'}
+          }
             onClick={handleButton1Click}
-            className={activeButton === "button1" ? "red" : ""}
+            className={activeButton === "button1" ? "redButton" : ""}
           >
-            Button 1
+            Morning
           </button>
           <button
+            style={
+              { padding:"8px", borderRadius:'0px 5px 5px 0px'}
+            }
             onClick={handleButton2Click}
-            className={activeButton === "button2" ? "blue" : ""}
+            className={activeButton === "button2" ? "redButton" : ""}
           >
-            Button 2
+            Evening
           </button>
         </div>
         <DatePicker
@@ -126,9 +142,11 @@ const DashboardTable: React.FC = () => {
           onChange={handleDateChange}
         />
         {/* <Button className="nav-proj-btn" type="primary"   onClick={handleMorningEveningButtonClick} style={{ marginLeft: 8 }}>
-        {isEvening ? 'Evening' : 'Morning'}
+        {isEvening ? 'Evening' : 'Morning'} setTotalUpWorkHrs
         </Button> */}
-        <span className="nav-hrs-estimate"> upwork hours : 355 hrs</span>
+        <span className="nav-hrs-estimate"> Est. Time : {totalEstHrs} </span>
+        <span className="nav-hrs-estimate"> Upwork. Time  : {setTotalUpWorkHrs} </span>
+
         {/* </div> */}
       </div>
     </div>

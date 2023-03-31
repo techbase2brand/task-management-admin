@@ -22,13 +22,13 @@ interface Employee {
 }
 
 interface Task {
-    EvngTaskID: number;
+  EvngTaskID: number;
   projectName: string;
   phaseName: string;
   module: string;
   task: string;
   estTime: string;
-  upWorkHrs: number;
+  upWorkHrs: string;
   employeeID: string;
   currDate: string;
 }
@@ -60,6 +60,8 @@ const EveningDashboard: React.FC = () => {
   const [data, setData] = useState<any>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [totalUpwork, setTotalUpWork] = useState<any>()
+  const [ totalEstHrs, setTotalEstHrs] = useState<any>()
+  const [ totalUpworkhrs, setTotalUpworkhrs] = useState<any>()
 
 
 
@@ -141,12 +143,15 @@ const EveningDashboard: React.FC = () => {
               }}
             >
               <EveningDashboardTable
-               totalUpwork ={totalUpwork }  setTotalUpWork ={setTotalUpWork}
+               totalUpwork ={totalUpwork }  setTotalUpWork ={setTotalUpWork} totalEstHrs={totalEstHrs}
+               setTotalEstHrs={setTotalEstHrs} totalUpworkhrs={totalUpworkhrs}  setTotalUpworkhrs={setTotalUpworkhrs}
                 />
             </div>
             <div style={{ width: "90%", height: "80%", marginTop: "3%" }}>
               <div style={{}}>
-                <EveningTasktable data={data} totalUpwork ={totalUpwork }  setTotalUpWork ={setTotalUpWork} />
+                <EveningTasktable data={data} totalUpwork ={totalUpwork }  setTotalUpWork ={setTotalUpWork}
+                 totalEstHrs={totalEstHrs} setTotalEstHrs={setTotalEstHrs} totalUpworkhrs={totalUpworkhrs}  setTotalUpworkhrs={setTotalUpworkhrs}
+                  />
               </div>
             </div>
           </div>

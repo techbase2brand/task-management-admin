@@ -1,4 +1,4 @@
-import React, { useState ,useContext} from "react";
+import React, { useState } from "react";
 // import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { DatePickerProps } from "antd";
@@ -8,9 +8,7 @@ import Menu from "./Menu";
 import Navbar from "./Navbar";
 // import EmployeeTable from "./EmployeeTable";
 import TableNavbar from "./TableNavbar";
-import ViewModuleTable from "./ViewModuleTable";
-import { GlobalInfo } from "../App";
-
+import ViewPhaseassignedTable from "./ViewPhaseassignedTable";
 
 
 type TabPosition = 'morning' | 'evening';
@@ -43,10 +41,8 @@ interface Employee {
 
 
 
-const ViewProject: React.FC = () => {
+const ViewPhaseAssign: React.FC = () => {
     const [mode, setMode] = useState<TabPosition>('morning');
-    const {modulejEditObj,setModulejEditObj } = useContext(GlobalInfo);
-
 
     const handleChange = (value: string) => {
         console.log(`selected ${value}`);
@@ -79,12 +75,13 @@ const ViewProject: React.FC = () => {
             <Menu />
           </div>
           <div  >
-              <div>
-                {/* < TableNavbar /> */}
+              {/* <div>
+                < TableNavbar />
 
-              </div>
+              </div> */}
               <div style={{width:'92%', marginLeft:'4.4%' , marginTop:'5%'}}>
               {/* <div className='proj-person'> vikash soni</div> */}
+
 
               <div
               style={{
@@ -102,11 +99,11 @@ const ViewProject: React.FC = () => {
                   fontWeight: "bold",
                 }}
               >
-               Module List
+               Phase Assigned
               </p>
               </div>
 
-               <     ViewModuleTable  modulejEditObj={modulejEditObj} setModulejEditObj={setModulejEditObj} />
+               <     ViewPhaseassignedTable />
 
               </div>
 
@@ -118,4 +115,4 @@ const ViewProject: React.FC = () => {
   );
 };
 
-export default ViewProject;
+export default ViewPhaseAssign;

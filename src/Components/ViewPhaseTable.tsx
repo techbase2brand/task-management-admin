@@ -44,7 +44,7 @@ const ViewPhaseTable: React.FC<Props> = ({phasejEditObj,setPhasejEditObj}) => {
 
   const handleEdit = (phaseID: number) => {
 
-console.log(phaseID,"gggg---yyyy");
+// console.log(phaseID,"gggg---yyyy");
 
 const filteredObj = phaseArr.filter((obj)=>obj.phaseID === phaseID)
 console.log();
@@ -121,6 +121,7 @@ navigate("/add-phase");
   return (
     <>
       <Table
+      style={{width:'80vw'}}
       dataSource={phaseArr.length > 0 ? phaseArr : data}
       columns={columns}
       // Add background color to the table header row

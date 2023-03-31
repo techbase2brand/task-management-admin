@@ -80,12 +80,32 @@ const ViewProject: React.FC = () => {
             <Menu />
           </div>
           <div  >
-              <div>
+              {/* <div>
                 < TableNavbar />
 
-              </div>
+              </div> */}
               <div style={{width:'92%', marginLeft:'4.4%' , marginTop:'5%'}}>
-              <div className='proj-person'> vikash soni</div>
+              {/* <div className='proj-person'> vikash soni</div> */}
+
+              <div
+              style={{
+                display: "flex",
+                width: "80%",
+                alignItems: "center",
+                // justifyContent: "flex-start",
+              }}
+            >
+              <p
+                style={{
+                  color: "#094781",
+                  justifyContent: "flex-start",
+                  fontSize: "32px",
+                  fontWeight: "bold",
+                }}
+              >
+               Phase List
+              </p>
+              </div>
 
                <     ViewPhaseTable  phasejEditObj={phasejEditObj}  setPhasejEditObj={setPhasejEditObj} />
 

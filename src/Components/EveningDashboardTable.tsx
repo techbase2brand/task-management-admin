@@ -11,7 +11,15 @@ interface EveningDashboardTableProps {
     setTotalUpWork: React.Dispatch<React.SetStateAction<any>>;
   }
 
-const EveningDashboardTable: React.FC<EveningDashboardTableProps> = ({ totalUpwork, setTotalUpWork }) => {
+  interface EveningDashboardTableProps {
+    totalEstHrs: any;
+    setTotalEstHrs: React.Dispatch<React.SetStateAction<any>>;
+    totalUpworkhrs:any;
+    setTotalUpworkhrs : React.Dispatch<React.SetStateAction<any>>;
+  }
+
+
+const EveningDashboardTable: React.FC<EveningDashboardTableProps> = ({ totalUpwork, setTotalUpWork,totalEstHrs,setTotalEstHrs, totalUpworkhrs, setTotalUpworkhrs }) => {
   const [manager, setManager] = useState('');
   const [teamLead, setTeamLead] = useState('');
   const [date, setDate] = useState<dayjs.Dayjs>(dayjs());
@@ -101,7 +109,7 @@ console.log(formattedTime,"hhhh----------");
           width: '100%',
         }}
       >
-        <Dropdown overlay={managerMenu}>
+        {/* <Dropdown overlay={managerMenu}>
           <Button className="nav-dropDown" style={{ width: '120px' }}>
             Manager: {manager}
           </Button>
@@ -113,7 +121,7 @@ console.log(formattedTime,"hhhh----------");
         </Dropdown>
         <Button type="primary" className="go-btn" style={{ width: '50px', paddingInline: '10px' }}>
           Go
-        </Button>
+        </Button> */}
         {/* <Button
         className="nav-proj-btn"
           type="primary"
@@ -124,8 +132,16 @@ console.log(formattedTime,"hhhh----------");
         </Button> */}
 
 <div>
-      <button onClick={handleButton1Click} className={activeButton === 'button1' ? 'red' : ''}>Button 1</button>
-      <button onClick={handleButton2Click} className={activeButton === 'button2' ? 'blue' : ''}>Button 2</button>
+      <button
+      style={
+        { padding:"8px" , borderRadius:'5px 0px 0px 5px'}
+      }
+      onClick={handleButton1Click} className={activeButton === 'button1' ? 'red' : ''}>Morning</button>
+      <button
+       style={
+        { backgroundColor:'royalBlue',padding:"8px", borderRadius:'0px 5px 5px 0px'}
+      }
+      onClick={handleButton2Click} className={activeButton === 'button2' ? 'blue' : ''}>Evening</button>
     </div>
         <DatePicker
           value={date}
@@ -139,9 +155,13 @@ console.log(formattedTime,"hhhh----------");
           onChange={handleDateChange}
         />
         {/* <Button className="nav-proj-btn" type="primary" style={{ marginLeft: 8 }}>
-          Morning/Evening
+          Morning/Evening  totalUpworkhrs
         </Button> */}
-        <span className='nav-hrs-estimate'> Act. Time : {totalUpwork} hrs</span>
+        <span className='nav-hrs-estimate'> upWork. hrs : {totalUpworkhrs} </span>
+
+        <span className='nav-hrs-estimate'> Est. hrs : {totalEstHrs} </span>
+
+        <span className='nav-hrs-estimate'> Act. hrs : {totalUpwork} </span>
       {/* </div> */}
     </div>
     </div>

@@ -35,6 +35,9 @@ const AppMenu = () => {
       <Menu.Item key="add-module" icon={<PlusOutlined />}>
         <Link to="/add-module">Add Module</Link>
       </Menu.Item>
+      <Menu.Item key="add-PhaseAssignedTo" icon={<PlusOutlined />}>
+        <Link to="/PhaseAssignedTo">Phase Assigned to</Link>
+      </Menu.Item>
       <Menu.Item key="view-project" icon={<TableOutlined />}>
         <Link to="/view-project">View Project</Link>
       </Menu.Item>
@@ -44,15 +47,18 @@ const AppMenu = () => {
       <Menu.Item key="view-module" icon={<TableOutlined />}>
         <Link to="/view-module">View Module</Link>
       </Menu.Item>
+      <Menu.Item key="ViewPhaseAssign" icon={<TableOutlined />}>
+        <Link to="/ViewPhaseAssign">View Phase AssignedTo</Link>
+      </Menu.Item>
       {/* <Menu.Item key="table-navbar" icon={<TableOutlined />}>
         <Link to="/table-navbar">Table Navbar</Link>
       </Menu.Item> */}
-      <Menu.Item key="add-morning-task" icon={<ScheduleOutlined />}>
+      {/* <Menu.Item key="add-morning-task" icon={<ScheduleOutlined />}>
         <Link to="/add-morning-task">Add Morning Task</Link>
       </Menu.Item>
       <Menu.Item key="add-evening-task" icon={<ScheduleOutlined />}>
         <Link to="/add-evening-task">Add Evening Task</Link>
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   );
 };

@@ -146,6 +146,7 @@ navigate("/add-project");
   return (
     <>
       <Table
+      style={{width:'80vw'}}
         dataSource={data}
         columns={columns}
         rowClassName={() => "header-row"}

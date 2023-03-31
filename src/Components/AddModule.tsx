@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { Space } from "antd";
 import Menu from "./Menu";
@@ -7,6 +7,7 @@ import EmployeeTable from "./EmployeeTable";
 import { PlusCircleOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { GlobalInfo } from "../App";
 
 interface Module {
   projectName: string;
@@ -33,17 +34,37 @@ type Phase = {
 
 const AddModule: React.FC<any> = ({ navigation, classes }) => {
   const [projectNames, setProjectNames] = useState<string[]>([]);
-  const [phases, setPhases] = useState<Phases[]>([]);
-  const [selectedProject, setSelectedProject] = useState<string>("");
-  const [selectedPhase, setSelectedPhase] = useState<string>("");
-  const [module, setModule] = useState<Module>({
-    projectName: "",
-    phaseName: "",
-    modules: ["", ""],
-  });
+const [phases, setPhases] = useState<Phases[]>([]);
+const [selectedProject, setSelectedProject] = useState<string>("");
+const [selectedPhase, setSelectedPhase] = useState<string>("");
+const [module, setModule] = useState<Module>({
+  projectName: "",
+  phaseName: "",
+  modules: ["", ""],
+});
 
 
   const navigate = useNavigate();
+
+  const { modulejEditObj, setModulejEditObj } = useContext(GlobalInfo);
+
+  // useEffect(() => {
+  //   if (modulejEditObj) {
+
+
+
+  //     setModule({
+  //       ...module,
+  //       projectName: modulejEditObj.projectName,
+  //       phaseName: modulejEditObj.phaseName,
+
+  //     });
+
+  //   }
+
+
+
+  // }, [modulejEditObj]);
 
   useEffect(() => {
     axios
@@ -58,7 +79,6 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
       setPhases(response.data);
     });
   }, []);
-
 
   const handleModuleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -103,6 +123,7 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
     } else {
       setSelectedPhase("");
       setModule({
+
         projectName: value,
         phaseName: "",
         modules: ["", ""],
@@ -119,19 +140,38 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
   };
 
   const handleSubmit = () => {
-    axios.post("http://localhost:5000/api/add-module", module)
-    .then((response) => {
-      console.log(response.data);
-      navigate("/view-module");
-      // log the response message
-      // show a success message to the user
-    })
-    .catch((error) => {
-      console.log(error.response.data); // log the error message
-      // show an error message to the user
-    });
+    // if (modulejEditObj) {
+    //   const data = {
+    //     projectName: modulejEditObj.projectName,
+    //     phaseName: modulejEditObj.phaseName,
+    //     modules: [{ ...module, modules: modulejEditObj.modules }],
+    //   };
 
-    // Submit module data to server
+    //   axios
+    //     .put(
+    //       `http://localhost:5000/api/update-module/${modulejEditObj.modID}`,
+    //       data
+    //     )
+    //     .then((response) => {
+    //       console.log(response, "999");
+    //       if (response.data === "OK") {
+    //         navigate("/view-module");
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error, "8888");
+    //     });
+    // } else {
+      axios
+        .post("http://localhost:5000/api/add-module", module)
+        .then((response) => {
+          console.log(response.data);
+          navigate("/view-module");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    // }
   };
 
   return (
@@ -157,7 +197,9 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
           >
             <div className="add-div">
               <p className="add-heading">Add Module</p>
-              <label className="add-label">Project Name<span style={{color: "red"}}>*</span></label>
+              <label className="add-label">
+                Project Name<span style={{ color: "red" }}>*</span>
+              </label>
 
               <select
                 // onChange={handleChange}
@@ -176,32 +218,38 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
               </select>
 
               {/* <input className="add-input" name="projectName" value={module.projectName} onChange={handleModuleChange} /> */}
-              <label className="add-label">Phase<span style={{color: "red"}}>*</span></label>
+              <label className="add-label">
+                Phase<span style={{ color: "red" }}>*</span>
+              </label>
               {/* {selectedProject && ( */}
-                <select
-                  className="add-input"
-                  id="phase"
-                  name="phase"
-                  value={selectedPhase}
-                  onChange={(e) => handlePhaseChange(e.target.value)}
-                >
-                  <option value="">Select a phase</option>
-                  {phases
-                    .filter((phase) => phase.projectName === selectedProject)
-                    .map((phase) => {
-                      return (
-                        <React.Fragment key={phase.phaseID}>
-                          <option value={phase.phases}>{phase.phases}</option>
-                        </React.Fragment>
-                      );
-                    })}
-                </select>
+              <select
+                className="add-input"
+                id="phase"
+                name="phase"
+                value={selectedPhase}
+                onChange={(e) => handlePhaseChange(e.target.value)}
+              >
+                <option value="">Select a phase</option>
+                {phases
+                  .filter((phase) => phase.projectName === selectedProject)
+                  .map((phase) => {
+                    return (
+                      <React.Fragment key={phase.phaseID}>
+                        <option value={phase.phases}>{phase.phases}</option>
+                      </React.Fragment>
+                    );
+                  })}
+              </select>
               {/* )} */}
 
-
               <div>
-                <label className="add-label">Modules<span style={{color: "red"}}>*</span></label>
-                {module.modules.map((moduleName, index) => (
+                <label className="add-label">
+                  Modules <span style={{ color: "red" }}>*</span>
+                </label>
+
+                {
+                // !modulejEditObj &&
+                 module?.modules.map((moduleName, index) => (
                   <div style={{ display: "flex" }} key={index}>
                     <input
                       className="add-input"
@@ -215,7 +263,7 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
                         )
                       }
                     />
-                    {index >= 1 && (
+                    {index !== 0 && (
                       <div
                         style={{
                           marginLeft: "10px",

@@ -14,7 +14,15 @@ interface Task {
   module: string;
   task: string;
   estTime:  string;
-  upWorkHrs:  number;
+  upWorkHrs:  string;
+}
+
+
+interface AssignedEmployees {
+  PhaseAssigneeID : number,
+  projectName: string;
+  phaseName: string;
+  assignedNames: string[]; // add the assignedNames property
 }
 
 interface Module {
@@ -47,6 +55,7 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
   const [projectNames, setProjectNames] = useState<string[]>([]);
   const [phases, setPhases] = useState<Phases[]>([]);
   const [modules, setModules] = useState<Module[]>([]);
+  const [phaseAssignedArr, setPhaseAssignedArr] = useState<AssignedEmployees[]>([]);
   const [selectedProject, setSelectedProject] = useState<string>("");
   const [selectedPhase, setSelectedPhase] = useState<string>("");
   const [selectedModule, setSelectedModule] = useState<string>("");
@@ -57,18 +66,41 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
     module: "",
     task: "",
     estTime:"",
-    upWorkHrs: 0,
+    upWorkHrs: "",
   });
 
   const navigate = useNavigate();
 
   console.log(morningTask, "33------");
 
+
+  useEffect(() => {
+    // Fetch employees from the backend API
+    axios.get<AssignedEmployees[]>("http://localhost:5000/get/PhaseAssignedTo").then((response) => {
+      console.log(response.data);
+      const sortedData = response.data.sort((a, b) => Number(b.PhaseAssigneeID) - Number(a.PhaseAssigneeID));
+
+      setPhaseAssignedArr(sortedData);
+    });
+  }, []);
+
+
+
+
+
+
   useEffect(() => {
     axios
       .get<Project[]>("http://localhost:5000/get/projects")
       .then((response) => {
-        setProjectNames(response.data.map((project) => project.projectName));
+        // setProjectNames(response.data.map((project) => project.projectName));
+   const arr =      response.data.map((project) => project.projectName);
+
+        console.log(arr,"ooo");
+
+
+
+
       });
   }, []);
 
@@ -111,7 +143,7 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
         module: "",
         task: "",
         estTime:"",
-        upWorkHrs: 0,
+        upWorkHrs: "",
       });
     } else {
       setSelectedPhase("");
@@ -121,7 +153,7 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
         module: "",
         task: "",
         estTime:"",
-        upWorkHrs: 0,
+        upWorkHrs:"",
       });
     }
   };
@@ -148,15 +180,23 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
     });
   };
 
-  function handleUpWorkHrsChange(value: number) {
-    if (value >= 0) {
-      setMorningTask({ ...morningTask, upWorkHrs: value });
-    } else {
-      // If the new value is less than zero, reset the input value to the current value.
-      // This prevents the input value from being decreased below zero.
-      setMorningTask({ ...morningTask, upWorkHrs: morningTask.upWorkHrs });
-    }
-  }
+  const handleUpWorkHrsChange = (value: string) => {
+    setMorningTask({
+      ...morningTask,
+      upWorkHrs: value,
+    });
+  };
+
+
+  // function handleUpWorkHrsChange(value: number) {
+  //   if (value >= 0) {
+  //     setMorningTask({ ...morningTask, upWorkHrs: value });
+  //   } else {
+  //     // If the new value is less than zero, reset the input value to the current value.
+  //     // This prevents the input value from being decreased below zero.
+  //     setMorningTask({ ...morningTask, upWorkHrs: morningTask.upWorkHrs });
+  //   }
+  // }
 
   const handleSubmit = () => {
     axios.post("http://localhost:5000/create/addTaskMorning",morningTask )
@@ -315,18 +355,27 @@ const AddModule: React.FC<any> = ({ navigation, classes }) => {
               </div>
               <div className="form-group">
                 <label className="add-label">Upwork Hrs</label>
-                <input
+                <select
                 style={{width:'16.8vw'}}
-
-                  type="number"
                   name="upWorkHrs"
                   className="form-control"
                   value={morningTask.upWorkHrs}
-                  onChange={(e) =>
-                    handleUpWorkHrsChange(parseInt(e.target.value))
-                  }
+                  onChange={(e) => handleUpWorkHrsChange((e.target.value))}
+
                   required
-                />
+                >
+                  <option value="">--Select Time--</option>
+                  {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((hour) =>
+                    [15, 30, 45].map((minute) => (
+                      <option
+                        key={`${hour}:${minute}`}
+                        value={`${hour}:${minute}`}
+                      >
+                        {`${hour} hours ${minute} mins`}
+                      </option>
+                    ))
+                  )}
+                </select>
               </div>
               </div>
               <button className="add-button" onClick={handleSubmit}>

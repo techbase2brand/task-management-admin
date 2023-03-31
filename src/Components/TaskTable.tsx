@@ -15,8 +15,17 @@ interface Task {
   employeeID: string;
 }
 
+interface EmployeeTime {
+  employeeID: string;
+  formattedTime: string;
+}
+
 interface Props {
   data: Task[][];
+  totalEstHrs :any;
+  setTotalEstHrs: React.Dispatch<React.SetStateAction<any>>
+  setTotalUpWorkHrs: any;
+  setSetTotalUpWorkHrs : React.Dispatch<React.SetStateAction<any>>
 }
 
 interface Employee {
@@ -31,7 +40,7 @@ const handleEdit = (EmpID: string | number) => {
   console.log(`Edit employee with id ${EmpID}`);
 };
 
-const TaskTable: React.FC<Props> = ({ data }) => {
+const TaskTable: React.FC<Props> = ({ data, totalEstHrs,setTotalEstHrs,setTotalUpWorkHrs ,setSetTotalUpWorkHrs}) => {
   const [employeeArr, setEmployeeArr] = useState<any>([]);
   const [arrayOfArray, setArrayOfArray] = useState<any>([]);
 
@@ -105,32 +114,164 @@ const TaskTable: React.FC<Props> = ({ data }) => {
       key: "upWorkHrs",
     },
 
-    {
-      title: "Action",
-      key: "action",
-      render: (_: any, record: Task) => (
-        <span>
-          <Button
-            type="link"
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record.MrngTaskID)}
-          >
-            Delete
-          </Button>
-        </span>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   key: "action",
+    //   render: (_: any, record: Task) => (
+
+    //     <span>
+    //       <Button
+    //         type="link"
+    //         danger
+    //         icon={<DeleteOutlined />}
+    //         onClick={() => handleDelete(record.MrngTaskID)}
+    //       >
+    //         Delete
+    //       </Button>
+    //     </span>
+    //   ),
+    // },
   ];
+
+
+  const totalMinutes = arrayOfArray.reduce((acc : any, curr : any) => {
+    curr.forEach((obj  : any) => {
+      if (obj?.estTime) {
+        const [hours, minutes] = obj.estTime.split(":").map(Number);
+        const timeInMinutes = hours * 60 + minutes;
+        acc += timeInMinutes;
+      }
+    });
+    return acc;
+  }, 0);
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  const formattedTime = `${hours}:${minutes.toString().padStart(2, "0")}`;
+
+  console.log(formattedTime,"uuugggggg------");
+
+setTotalEstHrs(formattedTime)
+
+// per object estTime
+
+const estTimeByEmployee = arrayOfArray.reduce((acc: any, curr: any) => {
+  curr.forEach((obj: any) => {
+    if (obj?.estTime) {
+      const [hours, minutes] = obj.estTime.split(":").map(Number);
+      const timeInMinutes = hours * 60 + minutes;
+      if (!acc[obj.employeeID]) {
+        acc[obj.employeeID] = 0;
+      }
+      acc[obj.employeeID] += timeInMinutes;
+    }
+  });
+  return acc;
+}, {});
+
+const employeeTimes: EmployeeTime[] = [];
+
+for (const employeeID in estTimeByEmployee) {
+  const totalMinutes = estTimeByEmployee[employeeID];
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  const formattedTime = `${hours}:${minutes.toString().padStart(2, "0")}`;
+  employeeTimes.push({ employeeID, formattedTime });
+}
+
+console.log(employeeTimes,"ffffggggg-----");
+
+
+// per object upworkTime
+
+const upWorkByEmployee = arrayOfArray.reduce((acc: any, curr: any) => {
+  curr.forEach((obj: any) => {
+    if (obj?.upWorkHrs) {
+      const [hours, minutes] = obj.upWorkHrs.split(":").map(Number);
+      const timeInMinutes = hours * 60 + minutes;
+      if (!acc[obj.employeeID]) {
+        acc[obj.employeeID] = 0;
+      }
+      acc[obj.employeeID] += timeInMinutes;
+    }
+  });
+  return acc;
+}, {});
+
+const employeeUpworkTimes: EmployeeTime[] = [];
+
+for (const employeeID in upWorkByEmployee) {
+  const totalMinutes = upWorkByEmployee[employeeID];
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  const formattedTime = `${hours}:${minutes.toString().padStart(2, "0")}`;
+  employeeUpworkTimes.push({ employeeID, formattedTime });
+}
+
+console.log(employeeTimes,"ffffggggg-----");
+
+
+// per object upworkTime end
+
+
+
+
+
+
+
+
+
+
+
+const totalMinutesUpwork = arrayOfArray.reduce((acc : any, curr : any) => {
+  curr.forEach((obj  : any) => {
+    if (obj?.upWorkHrs) {
+      const [hours, minutes] = obj?.upWorkHrs.split(":").map(Number);
+      const timeInMinutes = hours * 60 + minutes;
+      acc += timeInMinutes;
+    }
+  });
+  return acc;
+}, 0);
+
+const hoursUpwork = Math.floor(totalMinutesUpwork / 60);
+const minutessUpwork = totalMinutesUpwork % 60;
+const formattedTimesUpwork = `${hoursUpwork}:${minutessUpwork.toString().padStart(2, "0")}`;
+
+setSetTotalUpWorkHrs(formattedTimesUpwork);
+
+
+
 
   const tables = arrayOfArray.map((e: any) => {
     const arr = employeeArr.filter((emp: any) => {
       return emp.EmployeeID === e[0].employeeID;
-    });
+
+    })
+    const filteredEstTime = employeeTimes.filter((obj )=> obj.employeeID === e[0].employeeID)
+
+
+      //employeeUpworkTimes
+
+      const filteredUpworkTime = employeeUpworkTimes.filter((obj )=> obj.employeeID === e[0].employeeID)
+
+
+
+
+
+
+
 
     return (
       <div key={e[0].MrngTaskID}>
+        <div  style={{display:"flex", flexDirection: "row"}}>
         <p>{arr[0]?.firstName}</p>
+        <div  style={{marginLeft:'51%',display:"flex", flexDirection: "row", float:"right"}}>
+
+        <p>{filteredEstTime[0]?.formattedTime}</p>
+        <p style={{marginLeft:'10vw'}}>{filteredUpworkTime[0]?.formattedTime}</p>
+        </div>
+        </div>
         <Table
           dataSource={e}
           columns={columns}

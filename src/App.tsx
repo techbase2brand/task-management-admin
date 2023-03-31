@@ -17,6 +17,9 @@ import ViewModule from "./Components/ViewModule";
 import TableNavbar from "./Components/TableNavbar";
 import AddMorningTask from "./Components/AddMorningTask";
 import AddEveningTask from "./Components/AddEveningTask";
+import PhaseAssignedTo from "./Components/PhaseAssignedTo";
+import ViewPhaseAssign from "./Components/ViewPhaseAssign";
+import EditAddPhase from "./Components/EditAddPhase";
 
 export const GlobalInfo = createContext<any>({});
 
@@ -25,6 +28,7 @@ const App: React.FC = () => {
   const [projEditObj,setProjEditObj] = useState<any>()
   const [phasejEditObj,setPhasejEditObj] = useState<any>()
   const [modulejEditObj,setModulejEditObj] = useState<any>()
+  // const [modulejEditObj,setModulejEditObj] = useState<any>()
 
   return (
     <Router>
@@ -46,6 +50,11 @@ const App: React.FC = () => {
           <Route path="/table-navbar" element={<TableNavbar />} />
           <Route path="/add-morning-task" element={<AddMorningTask />} />
           <Route path="/add-evening-task" element={<AddEveningTask />} />
+          <Route path="/PhaseAssignedTo" element={<PhaseAssignedTo />} />
+          <Route path="/PhaseAssignedTo" element={<PhaseAssignedTo />} />
+          <Route path="/ViewPhaseAssign" element={<ViewPhaseAssign />} />
+          <Route path="/EditAddPhase" element={<EditAddPhase />} />
+
         </Routes>
       </GlobalInfo.Provider>
     </Router>

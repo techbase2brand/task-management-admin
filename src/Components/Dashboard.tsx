@@ -55,6 +55,9 @@ const Dashboard: React.FC = () => {
   const [mode, setMode] = useState<TabPosition>("morning");
   const [data, setData] = useState<any>([]);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [ totalEstHrs, setTotalEstHrs] = useState<any>()
+  const [ setTotalUpWorkHrs, setSetTotalUpWorkHrs] = useState<any>()
+
 
   const formattedDate = format(currentDate, "yyyy-MM-dd");
 
@@ -144,11 +147,14 @@ const Dashboard: React.FC = () => {
                 justifyContent: "flex-start",
               }}
             >
-              <DashboardTable />
+              <DashboardTable totalEstHrs={totalEstHrs} setTotalEstHrs={setTotalEstHrs}  setTotalUpWorkHrs={setTotalUpWorkHrs}
+               setSetTotalUpWorkHrs={setSetTotalUpWorkHrs}/>
             </div>
             <div style={{ width: "90%", height: "80%", marginTop: "3%" }}>
               <div style={{}}>
-                <TaskTable data={data}   />
+                <TaskTable data={data} totalEstHrs={totalEstHrs} setTotalEstHrs={setTotalEstHrs}
+                setTotalUpWorkHrs={setTotalUpWorkHrs}  setSetTotalUpWorkHrs={setSetTotalUpWorkHrs}
+                />
               </div>
             </div>
           </div>
